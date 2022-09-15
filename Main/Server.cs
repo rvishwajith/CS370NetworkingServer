@@ -63,7 +63,6 @@ public class Server
         int port = TCPConstants.STARTING_PORT;
         while (port < TCPConstants.STARTING_PORT + TCPConstants.PORT_RANGE)
         {
-            Console.WriteLine("Creating TCP thread on port " + port);
             Thread thread = new Thread(() =>
             {
                 CreateTCPListener(port);
@@ -79,32 +78,32 @@ public class Server
      */
     public void CreateTCPListener(int port)
     {
-        TcpListener listener = new TcpListener(IPAddress.Any, port);
+        var listener = new TcpListener(IPAddress.Any, port);
         listener.Start();
+        Console.WriteLine("Listening for TCP connections on port " + port);
+
         while (true)
         {
-            TcpClient client = listener.AcceptTcpClient();
+            var client = listener.AcceptTcpClient();
             Console.WriteLine("Accepted a TCP connection for authentication.");
 
-            // Stream to recieve the data from the client and a byte array to
-            // write the data to for processing.
-            int maximumDataSize = 256;
-            byte[] clientData = new byte[maximumDataSize];
-            NetworkStream clientStream = client.GetStream();
+            // Data stream to recieve data from the client, which is written to
+            // a byte array.
+            var maximumClientDataSize = 256;
+            var clientData = new byte[maximumClientDataSize];
+            var clientStream = client.GetStream();
 
             // Keep polling the stream to see if any data has been sent, if it
             // has, then read it to the array and process it.
-            int clientDataLength = clientStream.Read(clientData, 0, clientData.Length);
+            var clientDataLength = clientStream.Read(clientData, 0, clientData.Length);
             while (clientDataLength != 0)
             {
-
+                Console.WriteLine(
+                    "TCP listener on port " + port +
+                    " recieved packet of length: " + clientDataLength);
+                // Convert the packet to a string array.
             }
-
-            while (((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-
-            // Start the authentication timer here for automatic disconnection.
-
-
+            // Start the automatic disconnection timer.
             client.Close();
         }
     }

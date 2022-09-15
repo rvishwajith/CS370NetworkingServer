@@ -64,7 +64,7 @@ static class TCPConstants
  * 
  * The max number of failed login attempts before temporary barring a computer
  * from authenticating itself is 5. This is a basic account security measure,
- * as it prevents the brute forcing of passwords.
+ * as it prevents the brute forcing of passwords.A
  */
 static class AuthenticationConstants
 {

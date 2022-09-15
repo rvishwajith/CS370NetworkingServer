@@ -15,16 +15,26 @@
  * Voice Data: byte[] to float[]
  * Unity uses a float[] for the AudioListener component as well as recording
  * microphone input. However, this will probably be done on the client side.
+ * 
+ * Authentication: byte[] to string[]
+ * Authentication consists of the following elements:
+ * [0] The type of login (username / email).
+ * [1] The username or email address.
+ * [2] The password.
  */
 
-class DataTranslator
-{
-    public DataTranslator()
-    {
+using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
+static class DataTranslator
+{
+    public static string ToString(byte[] data)
+    {
+        return "";
     }
 
-    public static string ToString(byte[] data)
+    public static string[] ToStringArrat(byte[] data)
     {
         return "";
     }

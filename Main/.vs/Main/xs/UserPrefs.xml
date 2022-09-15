@@ -1,26 +1,28 @@
 ﻿<Properties StartupConfiguration="{A216BA6F-12A1-4CE5-AF35-9AD31F467DF3}|Default">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Server.cs">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.Main FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ServerConstants.cs">
     <Files>
-      <File FileName="NetworkedDataTranslation.cs" Line="1" Column="1" />
-      <File FileName="Server.cs" Line="1" Column="1" />
+      <File FileName="Program.cs" Line="14" Column="16" />
+      <File FileName="Server.cs" Line="103" Column="72" />
+      <File FileName="ServerConstants.cs" Line="27" Column="2" />
+      <File FileName="NetworkedDataTranslation.cs" Line="23" Column="21" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Main" expanded="True">
             <Node name="Main" expanded="True">
-              <Node name="Server.cs" selected="True" />
+              <Node name="ServerConstants.cs" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.Main PreferredExecutionTarget="MonoDevelop.Default" FirstBuild="True" />
 </Properties>
