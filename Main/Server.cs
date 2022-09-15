@@ -34,6 +34,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 public class Server
 {
@@ -44,14 +45,25 @@ public class Server
 
     public void Start()
     {
-        Console.WriteLine("Starting server.");
+        Console.WriteLine("Server set to begin listening.");
+        ManageTCPConnections();
 
+
+    }
+
+    // Create and manage the TCP connection threads.
+    public void ManageTCPConnections()
+    {
         // For each port, create a thread.
         for (int i = TCPConstants.STARTING_PORT; i < TCPConstants.PORT_RANGE; i++)
         {
             // For each thread, create a TCP listener.
         }
+    }
 
-        // Creade UDP threads.
+    // Create and manage the UDP connection threads.
+    public void ManageUDPConnections()
+    {
+
     }
 }

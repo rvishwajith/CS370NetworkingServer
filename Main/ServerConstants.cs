@@ -6,8 +6,12 @@
  * 
  * This file contains all of the the constants classes for the server side of
  * the networking part of the game, such as the port listening ranges.
- * 
- * The public IP may change dpeending on what connection is used (wired or
+ */
+
+using System;
+
+/*
+ * The public IP may change depending on what connection is used (wired or
  * wireless) and will be wired for the final prject once port forwarding it set
  * up.
  * 
