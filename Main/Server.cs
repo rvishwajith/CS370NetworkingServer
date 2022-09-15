@@ -54,6 +54,8 @@ public class Server
     // Create and manage the TCP connection threads.
     public void ManageTCPConnections()
     {
+        int currentPort = TCPConstants.STARTING_PORT;
+
         // For each port, create a thread.
         for (int i = TCPConstants.STARTING_PORT; i < TCPConstants.PORT_RANGE; i++)
         {
@@ -64,6 +66,6 @@ public class Server
     // Create and manage the UDP connection threads.
     public void ManageUDPConnections()
     {
-
+        int currentPort = TCPConstants.STARTING_PORT;
     }
 }

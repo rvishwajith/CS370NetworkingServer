@@ -55,3 +55,19 @@ static class TCPConstants
     public static int PORT_RANGE = 100;
     public static int MAX_PORT_CONNECTIONS = 16000;
 }
+
+/*
+ * A client attempting to login must send all of its information to the server
+ * within 10 seconds (10000 ms) or else it will be automatically disconnected.
+ * This is an easy measure to prevent random computers from trying to overwhelm
+ * the server by flooding it with connections.
+ * 
+ * The max number of failed login attempts before temporary barring a computer
+ * from authenticating itself is 5. This is a basic account security measure,
+ * as it prevents the brute forcing of passwords.
+ */
+static class AuthenticationConstants
+{
+    public static int INITIAL_AUTHENTICATION_TIMEOUT = 10000;
+    public static int MAX_LOGIN_ATTEMPTS = 5;
+}
