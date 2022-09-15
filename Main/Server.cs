@@ -32,6 +32,7 @@
  */
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -43,29 +44,79 @@ public class Server
         Console.WriteLine("Creating server.");
     }
 
+    /*
+     * Start listening on the Server ports.
+     */
     public void Start()
     {
-        Console.WriteLine("Server set to begin listening.");
+        Console.WriteLine("Server beginning listening.");
         ManageTCPConnections();
-
-
     }
 
-    // Create and manage the TCP connection threads.
+    /*
+     * Create and manage the TCP connection threads. Later on, only create new
+     * TCP threads if necessary, by creating a new thread only if the current
+     * thread reaches a maximum number of occupants (from TCPConstants).
+     */
     public void ManageTCPConnections()
     {
-        int currentPort = TCPConstants.STARTING_PORT;
-
-        // For each port, create a thread.
-        for (int i = TCPConstants.STARTING_PORT; i < TCPConstants.PORT_RANGE; i++)
+        int port = TCPConstants.STARTING_PORT;
+        while (port < TCPConstants.STARTING_PORT + TCPConstants.PORT_RANGE)
         {
-            // For each thread, create a TCP listener.
+            Console.WriteLine("Creating TCP thread on port " + port);
+            Thread thread = new Thread(() =>
+            {
+                CreateTCPListener(port);
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
     }
 
-    // Create and manage the UDP connection threads.
+    /*
+     * Create and manage the single TCP connection. The threading is handled by
+     * the ManageTCPConnections method already.
+     */
+    public void CreateTCPListener(int port)
+    {
+        TcpListener listener = new TcpListener(IPAddress.Any, port);
+        listener.Start();
+        while (true)
+        {
+            TcpClient client = listener.AcceptTcpClient();
+            Console.WriteLine("Accepted a TCP connection for authentication.");
+
+            // Stream to recieve the data from the client and a byte array to
+            // write the data to for processing.
+            int maximumDataSize = 256;
+            byte[] clientData = new byte[maximumDataSize];
+            NetworkStream clientStream = client.GetStream();
+
+            // Keep polling the stream to see if any data has been sent, if it
+            // has, then read it to the array and process it.
+            int clientDataLength = clientStream.Read(clientData, 0, clientData.Length);
+            while (clientDataLength != 0)
+            {
+
+            }
+
+            while (((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+
+            // Start the authentication timer here for automatic disconnection.
+
+
+            client.Close();
+        }
+    }
+
+    /* Create and manage the UDP connection threads.
+     */
     public void ManageUDPConnections()
     {
-        int currentPort = TCPConstants.STARTING_PORT;
+        int port = UDPConstants.STARTING_PORT;
+        while (port < UDPConstants.STARTING_PORT + UDPConstants.PORT_RANGE)
+        {
+
+        }
     }
 }
