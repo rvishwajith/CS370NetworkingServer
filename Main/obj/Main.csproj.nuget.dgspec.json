@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/Main.csproj": {}
+    "/Users/rohithvishwajith/Documents/School/UT/CS 370F/CS370NetworkingServer/Main/Main.csproj": {}
   },
   "projects": {
-    "/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/Main.csproj": {
+    "/Users/rohithvishwajith/Documents/School/UT/CS 370F/CS370NetworkingServer/Main/Main.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/Main.csproj",
+        "projectUniqueName": "/Users/rohithvishwajith/Documents/School/UT/CS 370F/CS370NetworkingServer/Main/Main.csproj",
         "projectName": "Main",
-        "projectPath": "/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/Main.csproj",
+        "projectPath": "/Users/rohithvishwajith/Documents/School/UT/CS 370F/CS370NetworkingServer/Main/Main.csproj",
         "packagesPath": "/Users/rohithvishwajith/.nuget/packages/",
-        "outputPath": "/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/",
+        "outputPath": "/Users/rohithvishwajith/Documents/School/UT/CS 370F/CS370NetworkingServer/Main/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/rohithvishwajith/.nuget/NuGet/NuGet.Config"

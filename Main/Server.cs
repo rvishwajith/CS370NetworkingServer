@@ -39,18 +39,78 @@ using System.Threading;
 
 public class Server
 {
-    public Server()
-    {
-        Console.WriteLine("Creating server.");
-    }
-
     /*
-     * Start listening on the Server ports.
+     * Called on Server's startup only. Creates all of the manager objects such
+     * as the TCP / UDP managers and also begins the process for building user
+     * data from files.
      */
     public void Start()
     {
-        Console.WriteLine("Server beginning listening.");
+        LoadAccountData();
         ManageTCPConnections();
+        Console.WriteLine("Server started listening for TCP Connections.");
+    }
+
+    /*
+     * Load in saved account data that is currently stored in unencrypted plain
+     * text files at a fixed directory. The files used are:
+     * 
+     * 1. User ID to Password Data File - Used to read in user IDs and create
+     * all account objects.
+     * 2. User ID to Email Data File - Used to add emails to the account
+     * objects.
+     * 3. User
+     */
+    public void LoadAccountData()
+    {
+        var dataURL = "/Users/rohithvishwajith/Documents/School/UT/CS 370F/" +
+            "UserData/";
+        var IDtoPassword = FileReader.GetFileData(dataURL + "IDtoPassword.txt");
+        var IDtoEmail = FileReader.GetFileData(dataURL + "IDtoEmail.txt");
+        var IDtoUsername = FileReader.GetFileData(dataURL + "IDtoUsername.txt");
+
+        CreateAccounts(IDtoPassword);
+        AddEmailAddresses(IDtoEmail);
+        AddUsernames(IDtoUsername);
+    }
+
+    public void CreateAccounts(string[] IDtoPasswordData)
+    {
+        foreach (string line in IDtoPasswordData)
+        {
+            var seperatorIndex = line.IndexOf('|');
+            var ID = long.Parse(line.Substring(0, seperatorIndex));
+            var password = line.Substring(seperatorIndex + 1);
+
+            Console.WriteLine("ID: " + ID + "\t\t\tPassword: " + password);
+        }
+        Console.WriteLine();
+    }
+
+    public void AddEmailAddresses(string[] IDtoEmail)
+    {
+        foreach (string line in IDtoEmail)
+        {
+            var seperatorIndex = line.IndexOf('|');
+            var ID = long.Parse(line.Substring(0, seperatorIndex));
+            var email = line.Substring(seperatorIndex + 1);
+
+            Console.WriteLine("ID: " + ID + "\t\t\tEmail: " + email);
+        }
+        Console.WriteLine();
+    }
+
+    public void AddUsernames(string[] IDtoUsername)
+    {
+        foreach (string line in IDtoUsername)
+        {
+            var seperatorIndex = line.IndexOf('|');
+            var ID = long.Parse(line.Substring(0, seperatorIndex));
+            var username = line.Substring(seperatorIndex + 1);
+
+            Console.WriteLine("ID: " + ID + "\t\t\tUsername: " + username);
+        }
+        Console.WriteLine();
     }
 
     /*
@@ -60,16 +120,20 @@ public class Server
      */
     public void ManageTCPConnections()
     {
-        int port = TCPConstants.STARTING_PORT;
+        int port = 25761;
+
+        Thread thread = new Thread(() => { CreateTCPListener(port); });
+        thread.IsBackground = true;
+        thread.Start();
+
+        /*
         while (port < TCPConstants.STARTING_PORT + TCPConstants.PORT_RANGE)
         {
-            Thread thread = new Thread(() =>
-            {
-                CreateTCPListener(port);
-            });
+            Thread thread = new Thread(() => { CreateTCPListener(port); });
             thread.IsBackground = true;
             thread.Start();
-        }
+            port++;
+        }*/
     }
 
     /*
@@ -78,33 +142,40 @@ public class Server
      */
     public void CreateTCPListener(int port)
     {
-        var listener = new TcpListener(IPAddress.Any, port);
-        listener.Start();
-        Console.WriteLine("Listening for TCP connections on port " + port);
-
-        while (true)
+        TcpListener listener;
+        listener = new TcpListener(IPAddress.Any, port);
+        try
         {
-            var client = listener.AcceptTcpClient();
-            Console.WriteLine("Accepted a TCP connection for authentication.");
+            listener.Start();
+            Console.WriteLine("Listening for TCP connections on port " + port);
 
-            // Data stream to recieve data from the client, which is written to
-            // a byte array.
-            var maximumClientDataSize = 256;
-            var clientData = new byte[maximumClientDataSize];
-            var clientStream = client.GetStream();
-
-            // Keep polling the stream to see if any data has been sent, if it
-            // has, then read it to the array and process it.
-            var clientDataLength = clientStream.Read(clientData, 0, clientData.Length);
-            while (clientDataLength != 0)
+            while (true)
             {
-                Console.WriteLine(
-                    "TCP listener on port " + port +
-                    " recieved packet of length: " + clientDataLength);
-                // Convert the packet to a string array.
+                var client = listener.AcceptTcpClient();
+                Console.WriteLine("Accepted a TCP connection for authentication.");
+
+                // Data stream to recieve data from the client, which is written to
+                // a byte array.
+                var maximumClientDataSize = 256;
+                var clientData = new byte[maximumClientDataSize];
+                var clientStream = client.GetStream();
+
+                // Keep polling the stream to see if any data has been sent, if it
+                // has, then read it to the array and process it.
+                var clientDataLength = clientStream.Read(clientData, 0, clientData.Length);
+                while (clientDataLength != 0)
+                {
+                    Console.WriteLine("TCP listener on port " + port +
+                        " recieved packet of length: " + clientDataLength);
+                    // Convert the packet to a string array.
+                }
+                // Start the automatic disconnection timer.
+                client.Close();
             }
-            // Start the automatic disconnection timer.
-            client.Close();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Failed to listen at port " + port);
         }
     }
 
