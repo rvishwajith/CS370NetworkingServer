@@ -34,8 +34,8 @@ static class DataTranslator
         return "";
     }
 
-    public static string[] ToStringArrat(byte[] data)
+    public static string[] ToStringArray(byte[] data)
     {
-        return "";
+        return new string[0];
     }
 }

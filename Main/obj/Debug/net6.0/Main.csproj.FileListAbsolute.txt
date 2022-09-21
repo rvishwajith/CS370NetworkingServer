@@ -1,0 +1,15 @@
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/Main.csproj.AssemblyReference.cache
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/Main.GeneratedMSBuildEditorConfig.editorconfig
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/Main.AssemblyInfoInputs.cache
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/Main.AssemblyInfo.cs
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/Main.csproj.CoreCompileInputs.cache
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/bin/Debug/net6.0/Main
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/bin/Debug/net6.0/Main.deps.json
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/bin/Debug/net6.0/Main.runtimeconfig.json
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/bin/Debug/net6.0/Main.dll
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/bin/Debug/net6.0/Main.pdb
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/Main.dll
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/refint/Main.dll
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/Main.pdb
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/Main.genruntimeconfig.cache
+/Users/rohithvishwajith/Documents/Projects/CS370NetworkingServer/Main/obj/Debug/net6.0/ref/Main.dll
