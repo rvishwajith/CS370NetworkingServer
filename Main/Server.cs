@@ -36,9 +36,13 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Server
 {
+    List<Account> accounts = new();
+
     /*
      * Called on Server's startup only. Creates all of the manager objects such
      * as the TCP / UDP managers and also begins the process for building user
@@ -65,13 +69,21 @@ public class Server
     {
         var dataURL = "/Users/rohithvishwajith/Documents/School/UT/CS 370F/" +
             "UserData/";
-        var IDtoPassword = FileReader.GetFileData(dataURL + "IDtoPassword.txt");
-        var IDtoEmail = FileReader.GetFileData(dataURL + "IDtoEmail.txt");
-        var IDtoUsername = FileReader.GetFileData(dataURL + "IDtoUsername.txt");
 
+        // Create an account using the UserID & Password.
+        var IDtoPassword = FileReader.GetFileData(dataURL + "IDtoPassword.txt");
         CreateAccounts(IDtoPassword);
-        AddEmailAddresses(IDtoEmail);
+
+        // Store the email address(es) of each account.
+        var IDtoEmail = FileReader.GetFileData(dataURL + "IDtoEmail.txt");
+        AddEmails(IDtoEmail);
+
+        // Store the username of each account.
+        var IDtoUsername = FileReader.GetFileData(dataURL + "IDtoUsername.txt");
         AddUsernames(IDtoUsername);
+
+        // Print out all of the data after the acccounts are created.
+        LogAccountInfo();
     }
 
     public void CreateAccounts(string[] IDtoPasswordData)
@@ -82,12 +94,13 @@ public class Server
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var password = line.Substring(seperatorIndex + 1);
 
-            Console.WriteLine("ID: " + ID + "\t\t\tPassword: " + password);
+            Account newAccount = new Account(ID, password);
+            accounts.Add(newAccount);
         }
         Console.WriteLine();
     }
 
-    public void AddEmailAddresses(string[] IDtoEmail)
+    public void AddEmails(string[] IDtoEmail)
     {
         foreach (string line in IDtoEmail)
         {
@@ -95,9 +108,10 @@ public class Server
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var email = line.Substring(seperatorIndex + 1);
 
-            Console.WriteLine("ID: " + ID + "\t\t\tEmail: " + email);
+            GetAccount(ID).email = email;
+
+            //Console.WriteLine("ID: " + ID + "\t\t\tEmail: " + email);
         }
-        Console.WriteLine();
     }
 
     public void AddUsernames(string[] IDtoUsername)
@@ -108,9 +122,49 @@ public class Server
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var username = line.Substring(seperatorIndex + 1);
 
-            Console.WriteLine("ID: " + ID + "\t\t\tUsername: " + username);
+            GetAccount(ID).username = username;
+
+            // Console.WriteLine("ID: " + ID + "\t\t\tUsername: " + username);
         }
-        Console.WriteLine();
+    }
+
+    public void LogAccountInfo()
+    {
+        Console.WriteLine("BUILT ACCOUNT DATA:\n");
+        foreach (Account account in accounts)
+        {
+            Console.WriteLine(account + "\n");
+        }
+    }
+
+    /* Look up an account with a given user ID. */
+    public Account GetAccount(long userID)
+    {
+        foreach (Account account in accounts)
+        {
+            if (account.userID == userID)
+            {
+                return account;
+            }
+        }
+        Console.WriteLine("ERROR: Failed to find an account that has the" +
+            "unique ID: " + userID);
+        return null!;
+    }
+
+    /* Look up an account using a player's username, including the tag. */
+    public Account GetAccount(string username)
+    {
+        foreach (Account account in accounts)
+        {
+            if (account.username == username)
+            {
+                return account;
+            }
+        }
+        Console.WriteLine("ERROR: Failed to find an account that has the" +
+            "username: " + username);
+        return null!;
     }
 
     /*
@@ -122,7 +176,10 @@ public class Server
     {
         int port = 25761;
 
-        Thread thread = new Thread(() => { CreateTCPListener(port); });
+        Thread thread = new Thread(() =>
+        {
+            CreateTCPListener(port);
+        });
         thread.IsBackground = true;
         thread.Start();
 
@@ -137,7 +194,7 @@ public class Server
     }
 
     /*
-     * Create and manage the single TCP connection. The threading is handled by
+     * Create and manage a single TCP connection. The threading is handled by
      * the ManageTCPConnections method already.
      */
     public void CreateTCPListener(int port)
@@ -167,13 +224,12 @@ public class Server
                 {
                     Console.WriteLine("TCP listener on port " + port +
                         " recieved packet of length: " + clientDataLength);
-                    // Convert the packet to a string array.
+                    // Convert packet to a string array.
                 }
-                // Start the automatic disconnection timer.
-                client.Close();
+                client.Close(); // Start the auto disconnect timer.
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             Console.WriteLine("Failed to listen at port " + port);
         }
@@ -186,7 +242,7 @@ public class Server
         int port = UDPConstants.STARTING_PORT;
         while (port < UDPConstants.STARTING_PORT + UDPConstants.PORT_RANGE)
         {
-
+            port++;
         }
     }
 }
