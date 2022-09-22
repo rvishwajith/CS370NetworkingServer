@@ -22,10 +22,14 @@ public class Main
     }
 
     /* Called after Setup() to enable all server processes once user accounts
-     * have been set up. */
+     * have been set up. The servers enabled are:
+     * AuthenticationServer (TCP)
+     * InGameEventServer (UDP & TCP)
+     * PartyAndTextChatServer (TCP)
+     * VoiceChatServer (TCP) */
     public void Run()
     {
-        Managers.PrimaryServer.Start();
+        Servers.Primary.Start();
     }
 
     /* Load in saved account data that is currently stored in unencrypted plain

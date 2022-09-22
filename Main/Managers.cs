@@ -13,8 +13,7 @@ using System;
 
 public static class Managers
 {
-    public static AccountManager Accounts = new AccountManager();
-    public static Server PrimaryServer = new Server();
+    public static AccountManager Accounts = new();
 
     // public static AuthenticationServer
     // public static InGameEventServer

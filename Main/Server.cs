@@ -104,16 +104,16 @@ public class Server
                 var clientDataLength = clientStream.Read(clientData, 0, clientData.Length);
                 while (clientDataLength != 0)
                 {
-                    Console.WriteLine("TCP listener on port " + port +
-                        " recieved packet of length: " + clientDataLength);
-                    // Convert packet to a string array.
+                    Console.WriteLine("TCP port " + port + " recieved packet" +
+                        "with " + clientDataLength + " bytes.");
+                    // Convert packet to string array.
                 }
                 client.Close(); // Start the auto disconnect timer.
             }
         }
         catch (Exception)
         {
-            Console.WriteLine("Failed to listen at port " + port);
+            Console.WriteLine("Failed to listen on port " + port);
         }
     }
 
