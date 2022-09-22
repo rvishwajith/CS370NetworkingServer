@@ -4,13 +4,12 @@
  * Dr. Abraham
  * CS 370F | Undergraduate Reading & Research
  * 
- * This is the runner class for the server side of the game. It starts the
- * server and does nothing else.
+ * This is the runner class for the server side of the game. It runs the main
+ * class and does nothing else.
  */
 
 using System;
 
 Main main = new Main();
-
-Server server = new Server();
-server.Start();
+main.Setup();
+main.Run();

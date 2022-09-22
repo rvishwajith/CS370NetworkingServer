@@ -45,7 +45,7 @@ public class Server
 
     public Server()
     {
-        accountManager = new();
+        accountManager = Managers.AccountManager;
     }
 
     /*
@@ -55,70 +55,7 @@ public class Server
      */
     public void Start()
     {
-        SetupAccounts();
-        accountManager.LogAccountInfo();
-
         ManageTCPConnections();
-    }
-
-    /*
-     * Load in saved account data that is currently stored in unencrypted plain
-     * text files at a fixed directory. The files used are:
-     * 
-     * 1. User ID to Password Data File - Used to read in user IDs and create
-     * all account objects.
-     * 2. User ID to Email Data File - Used to add emails to the account
-     * objects.
-     * 3. User
-     */
-    public void SetupAccounts()
-    {
-        var dataRoot = "/Users/rohithvishwajith/Documents/School/UT/CS 370F/" +
-            "UserData/";
-
-        var IDtoPassword = FileReader.GetFileData(dataRoot + "IDtoPassword.txt");
-        CreateAccounts(IDtoPassword);
-
-        var IDtoEmail = FileReader.GetFileData(dataRoot + "IDtoEmail.txt");
-        AddEmails(IDtoEmail);
-
-        var IDtoUsername = FileReader.GetFileData(dataRoot + "IDtoUsername.txt");
-        AddUsernames(IDtoUsername);
-    }
-
-    public void CreateAccounts(string[] IDtoPasswordData)
-    {
-        foreach (string line in IDtoPasswordData)
-        {
-            var seperatorIndex = line.IndexOf('|');
-            var ID = long.Parse(line.Substring(0, seperatorIndex));
-            var password = line.Substring(seperatorIndex + 1);
-
-            accountManager.Add(new Account(ID, password));
-        }
-    }
-
-    public void AddEmails(string[] IDtoEmail)
-    {
-        foreach (string line in IDtoEmail)
-        {
-            var seperatorIndex = line.IndexOf('|');
-            var ID = long.Parse(line.Substring(0, seperatorIndex));
-            var email = line.Substring(seperatorIndex + 1);
-
-            accountManager.SetEmail(accountManager.GetAccountWithID(ID), email);
-        }
-    }
-
-    public void AddUsernames(string[] IDtoUsername)
-    {
-        foreach (string line in IDtoUsername)
-        {
-            var seperatorIndex = line.IndexOf('|');
-            var ID = long.Parse(line.Substring(0, seperatorIndex));
-            var username = line.Substring(seperatorIndex + 1);
-            accountManager.GetAccountWithID(ID).username = username;
-        }
     }
 
     /*

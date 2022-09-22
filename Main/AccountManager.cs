@@ -61,7 +61,7 @@ public class AccountManager
         usernameToID.Add(account.username, account.userID);
     }
 
-    public Account GetAccountWithID(long ID)
+    public Account FindWithID(long ID)
     {
         try
         {
