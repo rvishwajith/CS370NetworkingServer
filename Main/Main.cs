@@ -13,8 +13,9 @@ using System;
 
 public class Main
 {
-    /* Called immediately upon the program running. Reads in text files to
-     * recreate saved account data before allowing any server processes. */
+    /* Setup method called immediately upon the program running. Calls methods
+     * to recreate saved account data before any server processes are started.
+     */
     public void Setup()
     {
         SetupAccounts();
@@ -23,10 +24,11 @@ public class Main
 
     /* Called after Setup() to enable all server processes once user accounts
      * have been set up. The servers enabled are:
-     * AuthenticationServer (TCP)
-     * InGameEventServer (UDP & TCP)
-     * PartyAndTextChatServer (TCP)
-     * VoiceChatServer (TCP) */
+     * - AuthenticationServer (TCP)
+     * - InGameEventServer (UDP & TCP)
+     * - PartyAndTextChatServer (TCP)
+     * - VoiceChatServer (TCP)
+     */
     public void Run()
     {
         Servers.Primary.Start();
@@ -36,7 +38,8 @@ public class Main
      * text files at a fixed directory. The files used are:
      * 1. User ID to Password File - Reads in UIDs to create account objects.
      * 2. User ID to Email File - Adds emails to account objects.
-     * 3. User ID to Username File - Adds usernames to account objects. */
+     * 3. User ID to Username File - Adds usernames to account objects.
+     */
     public void SetupAccounts()
     {
         var dataRoot = "/Users/rohithvishwajith/Documents/School/UT/CS 370F/" +

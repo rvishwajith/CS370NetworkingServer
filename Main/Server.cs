@@ -41,13 +41,12 @@ using System.Collections.Generic;
 
 public class Server
 {
-
     /*
      * Called on Server's startup only. Creates all of the manager objects such
      * as the TCP / UDP managers and also begins the process for building user
      * data from files.
      */
-    public void Start()
+    public void Run()
     {
         ManageTCPConnections();
     }
