@@ -23,16 +23,50 @@ public class AuthenticationServer
         portRange = 500;
     }
 
+    /* 1. Await connections
+     * 2. Validate the credentials.
+     * 3. Validate 2-Factor Authentication
+     * 4. Generate a Random Hardware ID for the client.
+     */
     public void Run()
     {
-        // Listen on TCP ports for all device connections.
-        // On connection, identify the device if it sends its credentials within
-        // X seconds and save its IP address.
-        // If the credentials are correct, check if the account has 2FA enabled.
-        // If not, generate a random ID for the client and send it to the
-        // client.
-        // If yes, then send the 2FA request to the client and generate/send
-        // the 2FA code to the user, then wait for 2FA code (or expire in 15
-        // minutes).
+        AwaitConnections();
+    }
+
+    /* Listen on TCP ports for any device connections. On connection, identify
+     * the device and save its IP address. If the device does not send its
+     * credentials within 5 seconds, forcefully disconnect it.
+     */
+    public void AwaitConnections()
+    {
+
+    }
+
+    /* If the credentials are correct, check if the account has 2FA enabled. If
+     * not, skip to step 4.
+     */
+    public void ValidateCredentials()
+    {
+
+    }
+
+    /* Generate a 7-digit random number ID and send an email to the user's saved
+     * address with it. If the client does not send a valid ID within 15 minutes
+     * or 5 tries, send an error message and forcefully disconnect it. If the
+     * client is a remembered device, it can also send a previously generated
+     * device ID which can be validated the same way as the credentials.
+     */
+    public void Handle2FA()
+    {
+
+    }
+
+    /* Generate a random 16-digit alphanumerical ID and sends it to the client,
+     * which can be used as a token to skip the login process next time if the
+     * user opts to remember their account.
+     */
+    public void GenerateDeviceToken()
+    {
+
     }
 }
