@@ -19,8 +19,7 @@ using System.IO;
 
 static class FileReader
 {
-    /* Read all of the lines of text from a local text file and store them in
-     * an array. */
+    /* Get the lines of text from a file at a given path as a string array. */
     public static string[] GetFileData(string location)
     {
         try

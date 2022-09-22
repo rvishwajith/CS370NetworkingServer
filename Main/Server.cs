@@ -41,7 +41,12 @@ using System.Collections.Generic;
 
 public class Server
 {
-    List<Account> accounts = new();
+    public AccountManager accountManager;
+
+    public Server()
+    {
+        accountManager = new();
+    }
 
     /*
      * Called on Server's startup only. Creates all of the manager objects such
@@ -50,9 +55,10 @@ public class Server
      */
     public void Start()
     {
-        LoadAccountData();
+        SetupAccounts();
+        accountManager.LogAccountInfo();
+
         ManageTCPConnections();
-        Console.WriteLine("Server started listening for TCP Connections.");
     }
 
     /*
@@ -65,25 +71,19 @@ public class Server
      * objects.
      * 3. User
      */
-    public void LoadAccountData()
+    public void SetupAccounts()
     {
-        var dataURL = "/Users/rohithvishwajith/Documents/School/UT/CS 370F/" +
+        var dataRoot = "/Users/rohithvishwajith/Documents/School/UT/CS 370F/" +
             "UserData/";
 
-        // Create an account using the UserID & Password.
-        var IDtoPassword = FileReader.GetFileData(dataURL + "IDtoPassword.txt");
+        var IDtoPassword = FileReader.GetFileData(dataRoot + "IDtoPassword.txt");
         CreateAccounts(IDtoPassword);
 
-        // Store the email address(es) of each account.
-        var IDtoEmail = FileReader.GetFileData(dataURL + "IDtoEmail.txt");
+        var IDtoEmail = FileReader.GetFileData(dataRoot + "IDtoEmail.txt");
         AddEmails(IDtoEmail);
 
-        // Store the username of each account.
-        var IDtoUsername = FileReader.GetFileData(dataURL + "IDtoUsername.txt");
+        var IDtoUsername = FileReader.GetFileData(dataRoot + "IDtoUsername.txt");
         AddUsernames(IDtoUsername);
-
-        // Print out all of the data after the acccounts are created.
-        LogAccountInfo();
     }
 
     public void CreateAccounts(string[] IDtoPasswordData)
@@ -94,10 +94,8 @@ public class Server
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var password = line.Substring(seperatorIndex + 1);
 
-            Account newAccount = new Account(ID, password);
-            accounts.Add(newAccount);
+            accountManager.Add(new Account(ID, password));
         }
-        Console.WriteLine();
     }
 
     public void AddEmails(string[] IDtoEmail)
@@ -108,9 +106,7 @@ public class Server
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var email = line.Substring(seperatorIndex + 1);
 
-            GetAccount(ID).email = email;
-
-            //Console.WriteLine("ID: " + ID + "\t\t\tEmail: " + email);
+            accountManager.SetEmail(accountManager.GetAccountWithID(ID), email);
         }
     }
 
@@ -121,50 +117,8 @@ public class Server
             var seperatorIndex = line.IndexOf('|');
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var username = line.Substring(seperatorIndex + 1);
-
-            GetAccount(ID).username = username;
-
-            // Console.WriteLine("ID: " + ID + "\t\t\tUsername: " + username);
+            accountManager.GetAccountWithID(ID).username = username;
         }
-    }
-
-    public void LogAccountInfo()
-    {
-        Console.WriteLine("BUILT ACCOUNT DATA:\n");
-        foreach (Account account in accounts)
-        {
-            Console.WriteLine(account + "\n");
-        }
-    }
-
-    /* Look up an account with a given user ID. */
-    public Account GetAccount(long userID)
-    {
-        foreach (Account account in accounts)
-        {
-            if (account.userID == userID)
-            {
-                return account;
-            }
-        }
-        Console.WriteLine("ERROR: Failed to find an account that has the" +
-            "unique ID: " + userID);
-        return null!;
-    }
-
-    /* Look up an account using a player's username, including the tag. */
-    public Account GetAccount(string username)
-    {
-        foreach (Account account in accounts)
-        {
-            if (account.username == username)
-            {
-                return account;
-            }
-        }
-        Console.WriteLine("ERROR: Failed to find an account that has the" +
-            "username: " + username);
-        return null!;
     }
 
     /*
@@ -174,23 +128,20 @@ public class Server
      */
     public void ManageTCPConnections()
     {
-        int port = 25761;
+        int port = 25761; // Arbitrary starting port.
 
-        Thread thread = new Thread(() =>
+        Thread authenticationServer = new Thread(() =>
         {
             CreateTCPListener(port);
         });
-        thread.IsBackground = true;
-        thread.Start();
+        authenticationServer.IsBackground = true;
+        authenticationServer.Start();
 
-        /*
-        while (port < TCPConstants.STARTING_PORT + TCPConstants.PORT_RANGE)
+        Thread secondServer = new Thread(() =>
         {
-            Thread thread = new Thread(() => { CreateTCPListener(port); });
-            thread.IsBackground = true;
-            thread.Start();
-            port++;
-        }*/
+            CreateTCPListener(34126);
+        });
+        secondServer.Start();
     }
 
     /*

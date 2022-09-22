@@ -37,11 +37,28 @@ public class AccountManager
         emailToID = new();
     }
 
-    public void AddAccount(Account account)
+    public void Add(Account account)
     {
-        IDToAccount.Add(account.userID, account);
-        usernameToID.Add(account.username, account.userID);
+        try
+        {
+            IDToAccount.Add(account.userID, account);
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Already added account with ID: " + account.userID);
+        }
+    }
+
+    public void SetEmail(Account account, string email)
+    {
+        account.email = email;
         emailToID.Add(account.email, account.userID);
+    }
+
+    public void SetUsername(Account account, string username)
+    {
+        account.username = username;
+        usernameToID.Add(account.username, account.userID);
     }
 
     public Account GetAccountWithID(long ID)
@@ -65,7 +82,7 @@ public class AccountManager
         }
         catch (KeyNotFoundException)
         {
-            Console.WriteLine("ERROR: Can't find account with username " + username);
+            Console.WriteLine("No account found with username " + username);
         }
         return null!;
     }
@@ -74,13 +91,21 @@ public class AccountManager
     {
         try
         {
-            return IDToAccount[usernameToID[email]];
+            return IDToAccount[emailToID[email]];
         }
         catch (KeyNotFoundException)
         {
-            Console.WriteLine("ERROR: Can't find account with the email " + email);
+            Console.WriteLine("No account found with email " + email);
         }
         return null!;
+    }
+
+    public void LogAccountInfo()
+    {
+        foreach (Account account in IDToAccount.Values)
+        {
+            Console.WriteLine(account + "\n");
+        }
     }
 }
 
