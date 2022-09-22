@@ -13,13 +13,11 @@ using System;
 
 public static class Managers
 {
-    public static AccountManager AccountManager = new AccountManager();
+    public static AccountManager Accounts = new AccountManager();
+    public static Server PrimaryServer = new Server();
 
     // public static AuthenticationServer
     // public static InGameEventServer
     // public static InGameVoiceChatServer
     // public static InGameTextChatServer 
-
-    public static Server? SERVER = null;
 }
-

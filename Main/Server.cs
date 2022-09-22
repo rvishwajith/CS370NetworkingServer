@@ -41,12 +41,6 @@ using System.Collections.Generic;
 
 public class Server
 {
-    public AccountManager accountManager;
-
-    public Server()
-    {
-        accountManager = Managers.AccountManager;
-    }
 
     /*
      * Called on Server's startup only. Creates all of the manager objects such
