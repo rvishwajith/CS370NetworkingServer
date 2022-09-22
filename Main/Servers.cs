@@ -20,8 +20,6 @@ using System;
 public static class Servers
 {
     public static Server Primary = new();
-    public static Server Auth = new();
-
     public static AuthenticationServer Authentication = new();
 }
 

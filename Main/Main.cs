@@ -31,7 +31,8 @@ public class Main
      */
     public void Run()
     {
-        Servers.Primary.Start();
+        // Servers.Primary.Run();
+        Servers.Authentication.Run();
     }
 
     /* Load in saved account data that is currently stored in unencrypted plain

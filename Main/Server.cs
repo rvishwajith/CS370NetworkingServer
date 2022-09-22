@@ -48,7 +48,7 @@ public class Server
      */
     public void Run()
     {
-        ManageTCPConnections();
+        // ManageTCPConnections();
     }
 
     /*
@@ -60,6 +60,7 @@ public class Server
     {
         int port = 25761; // Arbitrary starting port.
 
+        /*
         Thread authenticationServer = new Thread(() =>
         {
             CreateTCPListener(port);
@@ -72,6 +73,7 @@ public class Server
             CreateTCPListener(34126);
         });
         requestServer.Start();
+        */
     }
 
     /*

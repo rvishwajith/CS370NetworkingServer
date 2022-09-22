@@ -12,6 +12,14 @@
  * 65535 simultaneous connections, which will liekly change.
  */
 
+using System;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using System.Collections;
+using System.Collections.Generic;
+
 public class AuthenticationServer
 {
     public int startingPort;
@@ -30,7 +38,12 @@ public class AuthenticationServer
      */
     public void Run()
     {
-        AwaitConnections();
+        Thread connectionsThread = new Thread(() =>
+        {
+            AwaitConnections();
+        });
+        connectionsThread.IsBackground = true;
+        connectionsThread.Start();
     }
 
     /* Listen on TCP ports for any device connections. On connection, identify
@@ -39,7 +52,40 @@ public class AuthenticationServer
      */
     public void AwaitConnections()
     {
+        int port = 23761;
+        try
+        {
+            TcpListener listener = new TcpListener(IPAddress.Any, port);
+            listener.Start();
+            Console.WriteLine("Listening for TCP connections on port " + port);
 
+            while (true)
+            {
+                var client = listener.AcceptTcpClient();
+
+                // Step 1. Identify Client
+                Console.WriteLine("Authentication - Connection from IP"
+                    + ((IPEndPoint)client.Client.RemoteEndPoint!).Address);
+
+                // Write data from the client stream to a byte array.
+                var maximumClientDataSize = 256;
+                var clientData = new byte[maximumClientDataSize];
+                var clientStream = client.GetStream();
+
+                // Keep reading data from the stream and identifying it.
+                var clientDataLength = clientStream.Read(clientData, 0, clientData.Length);
+                while (clientDataLength != 0)
+                {
+                    Console.WriteLine("TCP port " + port + " recieved packet" +
+                        "with " + clientDataLength + " bytes.");
+                }
+                client.Close();
+            }
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("AwaitConnections - Failed to listen on " + port);
+        }
     }
 
     /* If the credentials are correct, check if the account has 2FA enabled. If
