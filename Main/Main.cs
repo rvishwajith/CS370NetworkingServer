@@ -13,34 +13,26 @@ using System;
 
 public class Main
 {
-    private Server server;
-
-    public Main()
-    {
-        server = new Server();
-    }
-
+    /* Called immediately upon the program running. Reads in text files to
+     * recreate saved account data before allowing any server processes. */
     public void Setup()
     {
         SetupAccounts();
-        Managers.AccountManager.LogAccountInfo();
+        Managers.Accounts.LogAccountInfo();
     }
 
+    /* Called after Setup() to enable all server processes once user accounts
+     * have been set up. */
     public void Run()
     {
-        server.Start();
+        Managers.PrimaryServer.Start();
     }
 
-    /*
-     * Load in saved account data that is currently stored in unencrypted plain
+    /* Load in saved account data that is currently stored in unencrypted plain
      * text files at a fixed directory. The files used are:
-     * 
-     * 1. User ID to Password Data File - Used to read in user IDs and create
-     * all account objects.
-     * 2. User ID to Email Data File - Used to add emails to the account
-     * objects.
-     * 3. User
-     */
+     * 1. User ID to Password File - Reads in UIDs to create account objects.
+     * 2. User ID to Email File - Adds emails to account objects.
+     * 3. User ID to Username File - Adds usernames to account objects. */
     public void SetupAccounts()
     {
         var dataRoot = "/Users/rohithvishwajith/Documents/School/UT/CS 370F/" +
@@ -64,7 +56,7 @@ public class Main
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var password = line.Substring(seperatorIndex + 1);
 
-            Managers.AccountManager.Add(new Account(ID, password));
+            Managers.Accounts.Add(new Account(ID, password));
         }
     }
 
@@ -76,7 +68,7 @@ public class Main
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var email = line.Substring(seperatorIndex + 1);
 
-            Managers.AccountManager.SetEmail(Managers.AccountManager.FindWithID(ID), email);
+            Managers.Accounts.SetEmail(Managers.Accounts.FindWithID(ID), email);
         }
     }
 
@@ -88,7 +80,7 @@ public class Main
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var username = line.Substring(seperatorIndex + 1);
 
-            Managers.AccountManager.FindWithID(ID).username = username;
+            Managers.Accounts.FindWithID(ID).username = username;
         }
     }
 }
