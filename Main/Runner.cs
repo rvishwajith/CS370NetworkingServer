@@ -10,5 +10,7 @@
 
 using System;
 
+Main main = new Main();
+
 Server server = new Server();
 server.Start();

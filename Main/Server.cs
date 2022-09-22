@@ -137,11 +137,11 @@ public class Server
         authenticationServer.IsBackground = true;
         authenticationServer.Start();
 
-        Thread secondServer = new Thread(() =>
+        Thread requestServer = new Thread(() =>
         {
             CreateTCPListener(34126);
         });
-        secondServer.Start();
+        requestServer.Start();
     }
 
     /*
