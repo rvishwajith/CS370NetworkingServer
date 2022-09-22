@@ -32,9 +32,8 @@ using System.Collections.Generic;
 
 public class Account
 {
-    public long? userID;
-    public string password;
-
+    public long userID = 0;
+    public string password = "";
     public string email = "";
     public string username = "";
 
