@@ -1,29 +1,32 @@
 ﻿<Properties StartupConfiguration="{A216BA6F-12A1-4CE5-AF35-9AD31F467DF3}|Default">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Account.cs">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AuthenticationServer.cs">
     <Files>
-      <File FileName="Server.cs" Line="109" Column="61" />
-      <File FileName="ServerConstants.cs" Line="54" Column="43" />
-      <File FileName="NetworkedDataTranslation.cs" Line="39" Column="28" />
-      <File FileName="FileReader.cs" Line="11" Column="20" />
-      <File FileName="Account.cs" Line="38" Column="29" />
+      <File FileName="Server.cs" Line="76" Column="11" />
+      <File FileName="ServerConstants.cs" Line="58" Column="1" />
+      <File FileName="Account.cs" Line="50" Column="6" />
+      <File FileName="DataTranslator.cs" Line="41" Column="2" />
+      <File FileName="Runner.cs" Line="13" Column="24" />
+      <File FileName="Main.cs" Line="37" Column="1" />
+      <File FileName="Managers.cs" Line="16" Column="51" />
+      <File FileName="Servers.cs" Line="22" Column="42" />
+      <File FileName="AuthenticationServer.cs" Line="122" Column="38" />
+      <File FileName="Connection.cs" Line="30" Column="68" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Main" expanded="True">
-            <Node name="Main" expanded="True">
-              <Node name="Account.cs" selected="True" />
-            </Node>
+            <Node name="Main" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.Main PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.Main PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>

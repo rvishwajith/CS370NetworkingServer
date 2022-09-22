@@ -57,28 +57,12 @@ public class AuthenticationServer
         {
             TcpListener listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
-            Console.WriteLine("Listening for TCP connections on port " + port);
+            Console.WriteLine("Authentication - Listening @ " + port);
 
             while (true)
             {
-                Console.WriteLine("Authentication - A client connected.");
                 var connection = new Connection(listener.AcceptTcpClient());
-
-                /*
-                // Write data from the client's stream to a byte array.
-                var maximumClientDataSize = 256;
-                var clientData = new byte[maximumClientDataSize];
-                var clientStream = client.GetStream();
-
-                // Keep reading data from the stream and identifying it.
-                var clientDataLength = clientStream.Read(clientData, 0, clientData.Length);
-                while (clientDataLength != 0)
-                {
-                    Console.WriteLine("TCP port " + port + " recieved packet" +
-                        "with " + clientDataLength + " bytes.");
-                }
-                client.Close();
-                */
+                connection.HandleConnectedClient();
 
                 connection.client.Close();
             }
@@ -92,9 +76,14 @@ public class AuthenticationServer
     /* If the credentials are correct, check if the account has 2FA enabled. If
      * not, skip to step 4.
      */
-    public void ValidateCredentials()
+    public bool ValidateCredentials(string[] credentials)
     {
+        return true;
+    }
 
+    public bool Is2FAEnabled(long userID)
+    {
+        return false;
     }
 
     /* Generate a 7-digit random number ID and send an email to the user's saved
@@ -103,17 +92,17 @@ public class AuthenticationServer
      * client is a remembered device, it can also send a previously generated
      * device ID which can be validated the same way as the credentials.
      */
-    public void Handle2FA()
+    public void Handle2FA(long userID)
     {
-
+        Console.WriteLine("Send a 2FA email or open the mobile app.");
     }
 
     /* Generate a random 16-digit alphanumerical ID and sends it to the client,
      * which can be used as a token to skip the login process next time if the
      * user opts to remember their account.
      */
-    public void GenerateDeviceToken()
+    public string GenerateDeviceToken()
     {
-
+        return "2562-sh72-dhwk-cak5";
     }
 }
