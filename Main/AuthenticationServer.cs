@@ -42,7 +42,7 @@ public class AuthenticationServer
         {
             AwaitConnections();
         });
-        connectionsThread.IsBackground = true;
+        //connectionsThread.IsBackground = true;
         connectionsThread.Start();
     }
 
@@ -61,13 +61,11 @@ public class AuthenticationServer
 
             while (true)
             {
-                var client = listener.AcceptTcpClient();
+                Console.WriteLine("Authentication - A client connected.");
+                var connection = new Connection(listener.AcceptTcpClient());
 
-                // Step 1. Identify Client
-                Console.WriteLine("Authentication - Connection from IP"
-                    + ((IPEndPoint)client.Client.RemoteEndPoint!).Address);
-
-                // Write data from the client stream to a byte array.
+                /*
+                // Write data from the client's stream to a byte array.
                 var maximumClientDataSize = 256;
                 var clientData = new byte[maximumClientDataSize];
                 var clientStream = client.GetStream();
@@ -80,6 +78,9 @@ public class AuthenticationServer
                         "with " + clientDataLength + " bytes.");
                 }
                 client.Close();
+                */
+
+                connection.client.Close();
             }
         }
         catch (Exception)
