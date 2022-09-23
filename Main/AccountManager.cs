@@ -30,11 +30,14 @@ public class AccountManager
     Dictionary<string, long> usernameToID;
     Dictionary<string, long> emailToID;
 
+    Dictionary<long, string> IDtoEmail2FA;
+
     public AccountManager()
     {
         IDToAccount = new();
         usernameToID = new();
         emailToID = new();
+        IDtoEmail2FA = new();
     }
 
     public void Add(Account account)
@@ -61,6 +64,25 @@ public class AccountManager
         usernameToID.Add(account.username, account.userID);
     }
 
+    public void AddEmail2FACode(Account account, string code)
+    {
+        IDtoEmail2FA.Add(account.userID, code);
+    }
+
+    public bool ValidateEmail2FACode(Account account, string code)
+    {
+        try
+        {
+            var actualCode = IDtoEmail2FA[account.userID];
+            Console.WriteLine("Checking code " + code);
+            return code.Equals(actualCode);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public Account FindWithID(long ID)
     {
         try
@@ -70,8 +92,8 @@ public class AccountManager
         catch (KeyNotFoundException)
         {
             Console.WriteLine("ERROR: Can't find account with ID " + ID);
+            return null!;
         }
-        return null!;
     }
 
     public Account GetAccountWithUsername(string username)
@@ -82,9 +104,8 @@ public class AccountManager
         }
         catch (KeyNotFoundException)
         {
-            Console.WriteLine("No account found with username " + username);
+            return null!;
         }
-        return null!;
     }
 
     public Account GetAccountWithEmail(string email)
@@ -95,12 +116,11 @@ public class AccountManager
         }
         catch (KeyNotFoundException)
         {
-            Console.WriteLine("No account found with email " + email);
+            return null!;
         }
-        return null!;
     }
 
-    public void LogAccountInfo()
+    public void LogAllAccounts()
     {
         foreach (Account account in IDToAccount.Values)
         {

@@ -19,7 +19,7 @@ public class Main
     public void Setup()
     {
         SetupAccounts();
-        Managers.Accounts.LogAccountInfo();
+        Managers.Accounts.LogAllAccounts();
     }
 
     /* Called after Setup() to enable all server processes once user accounts
@@ -54,6 +54,9 @@ public class Main
 
         var IDtoUsername = FileReader.GetFileData(dataRoot + "IDtoUsername.txt");
         AddUsernames(IDtoUsername);
+
+        var IDtoEmail2FA = FileReader.GetFileData(dataRoot + "IDto2FA.txt");
+        AddEmail2FAStatus(IDtoEmail2FA);
     }
 
     public void CreateAccounts(string[] IDtoPasswordData)
@@ -88,7 +91,16 @@ public class Main
             var ID = long.Parse(line.Substring(0, seperatorIndex));
             var username = line.Substring(seperatorIndex + 1);
 
-            Managers.Accounts.FindWithID(ID).username = username;
+            Managers.Accounts.SetUsername(Managers.Accounts.FindWithID(ID), username);
+        }
+    }
+
+    public void AddEmail2FAStatus(string[] IDtoEmail2FA)
+    {
+        foreach (string line in IDtoEmail2FA)
+        {
+            var ID = long.Parse(line);
+            Managers.Accounts.FindWithID(ID).email2FA = true;
         }
     }
 }

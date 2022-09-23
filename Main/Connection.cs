@@ -14,6 +14,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Principal;
 using System.Text;
 
 public class Connection
@@ -22,55 +23,91 @@ public class Connection
     public NetworkStream stream;
     public string IP = "";
 
+    public int maxTimeout = 500000;
+
+    public Account validAccount = null!;
+
     public Connection(TcpClient tcpClient)
     {
         client = tcpClient;
+        client.SendTimeout = maxTimeout;
+        client.ReceiveTimeout = maxTimeout;
         stream = client.GetStream();
         IP = ((IPEndPoint)client.Client.RemoteEndPoint!).ToString();
-
-        Console.WriteLine("Created client with IP Address: " + IP);
+        Console.WriteLine("Connected to client with IP Address: " + IP);
     }
 
     /* Read any data from a conencted client and write it to a byte array for
      * processing. */
-    public void HandleConnectedClient()
+    public void HandleClient()
     {
-        Console.WriteLine("Authentication - Client connected.");
-
-        // Write data from the client's stream to a byte array.
-        var maximumClientDataSize = 256;
-        var data = new byte[maximumClientDataSize];
-
-        var dataLength = stream.Read(data, 0, data.Length);
-        while (dataLength != 0)
+        while (true)
         {
-            // Console.WriteLine("Connection recieved " + dataLength + " bytes " + "of data.");
+            int bufferSize = 256;
+            byte[] data = new byte[bufferSize];
+            var dataLength = stream.Read(data, 0, data.Length);
+            if (dataLength != 0)
+            {
+                Console.WriteLine("Recieved " + dataLength + " bytes.");
 
-            // Decode data
-            var recievedEvent = Encoding.UTF8.GetString(data);
-            Process(recievedEvent);
+                var trimmedData = new byte[dataLength];
+                Array.Copy(data, trimmedData, dataLength);
 
-            dataLength = 0;
+                var recievedEvent = Encoding.UTF8.GetString(trimmedData);
+                Process(recievedEvent.Trim());
+            }
         }
     }
 
     public void Process(string data)
     {
-
-        string[] dataParts = data.Trim().Split(" ");
+        string[] dataParts = data.Split(" ");
         if (dataParts[0] == "UPWD" && dataParts.Length == 3)
         {
             var username = dataParts[1];
             var password = dataParts[2];
-            Console.WriteLine("Validating username/password " + username + " "
-                + password);
 
+            if (ValidateCredentials(username, password))
+            {
+                if (validAccount.email2FA)
+                {
+                    var code = Generator.GenerateEmail2FACode();
+                    Console.WriteLine("Generated code is " + code);
+                    Managers.Accounts.AddEmail2FACode(validAccount, code);
+                    Send("Email2FACode");
+                }
+            }
+        }
+        else if (dataParts[0] == "Email2FACode")
+        {
+            var code = dataParts[1];
+            var correctCode = Managers.Accounts.ValidateEmail2FACode(validAccount, code);
+            Console.WriteLine("Correct 2FA Code: " + correctCode);
         }
     }
 
-    public void Validate(string username, string password)
+    public bool ValidateCredentials(string username, string password)
     {
+        var account = Managers.Accounts.GetAccountWithUsername(username);
+        if (account == null)
+        {
+            Send("Username does not exist.");
+            return false!;
+        }
+        else if (!account.password.Equals(password))
+        {
+            Send("Password is incorrect.");
+            return false!;
+        }
+        validAccount = account;
+        return true;
+    }
 
+    public void Send(string message)
+    {
+        Console.WriteLine("Sending: " + message);
+        var messageData = Encoding.UTF8.GetBytes(message);
+        stream.Write(messageData, 0, messageData.Length);
     }
 }
 

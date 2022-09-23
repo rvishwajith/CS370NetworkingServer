@@ -41,6 +41,7 @@ public class Account
     public long[] matches = new long[0];
     public long[] reports = new long[0];
 
+    public bool email2FA = false;
     public string[] devices = new string[0];
 
     public Account(long uid, string pwd)
@@ -64,15 +65,15 @@ public class Account
      */
     public override string ToString()
     {
-        var count = 0;
         var wrapNumber = 10;
 
         string output = username + " {\n\t";
         output += "UID: " + userID + "\n\t";
         output += "Email: " + email + "\n\t";
         output += "Password: " + password + "\n\t";
+        output += "Email 2FA Enabled: " + email + "\n\t";
 
-        count = 0;
+        var count = 0;
         output += "Friends (" + friends.Length + "): [ ";
         foreach (long friend in friends!)
         {

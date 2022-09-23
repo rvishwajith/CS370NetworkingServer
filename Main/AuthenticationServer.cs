@@ -53,18 +53,17 @@ public class AuthenticationServer
     public void AwaitConnections()
     {
         int port = 23761;
+        TcpListener listener = new TcpListener(IPAddress.Any, port);
+
         try
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
             Console.WriteLine("Authentication - Listening @ " + port);
 
             while (true)
             {
                 var connection = new Connection(listener.AcceptTcpClient());
-                connection.HandleConnectedClient();
-
-                connection.client.Close();
+                connection.HandleClient();
             }
         }
         catch (Exception)
